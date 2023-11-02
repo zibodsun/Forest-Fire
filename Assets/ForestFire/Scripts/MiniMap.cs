@@ -55,6 +55,12 @@ public class MiniMap : MonoBehaviour
         {
             for (int yCount = 0; yCount < forestFire3D.gridSizeY; yCount++)
             {
+                // check if the cell contains a hostage
+                if (forestFire3D.forestFireCells[xCount, yCount].containsHostage) {
+                    cellSpriteRenderers[xCount, yCount].color = Color.cyan;
+                    continue;
+                }
+
                 if (forestFire3D.forestFireCells[xCount, yCount].cellState == ForestFireCell.State.Alight)
                 {
                     cellSpriteRenderers[xCount, yCount].color = Color.red;
@@ -77,7 +83,7 @@ public class MiniMap : MonoBehaviour
                 }
                 else // something has gone wrong, display an error message
                 {
-                    Debug.LogError("objectArray is not 0, 1 or 2, check code for errors");
+                    Debug.LogError("objectArray is not 0, 1 or 2, check code for errors");  
                 }
             }
         }

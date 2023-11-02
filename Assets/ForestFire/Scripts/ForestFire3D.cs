@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 // class that controls the forest fire cellular automaton
 public class ForestFire3D : MonoBehaviour
 {
+    public HostageManager hostageManager;
+
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
     public int nlight; // the number of trees to set alight at the start of the game
@@ -29,17 +31,22 @@ public class ForestFire3D : MonoBehaviour
     private float _gameTimer; // a variable that will be used detect when the game should update 
 
     private Camera gameCamera; // the camera that is players viewport
+    private int[,] hostages;
 
     // Awake is a built-in Unity function that is only called once, before the Start function
     private void Awake()
     {
         // find the camera in the scene and store it for later
         gameCamera = FindObjectOfType<Camera>();
+        hostageManager = FindObjectOfType<HostageManager>();
     }
 
     // Start is a built-in Unity function that is called before the first frame update
     private void Start()
     {
+        hostages = hostageManager.GenerateHostages();
+        hostageManager.PrintHostageList(hostages);
+        
         CreateGrid(gridSizeX, gridSizeY);
         RandomiseGrid();
         PauseGame(true);
@@ -110,6 +117,18 @@ public class ForestFire3D : MonoBehaviour
         {
             for (int yCount = 0; yCount < gridSizeY; yCount++)
             {
+                
+                if (hostageManager.ContainsHostage(xCount, yCount, hostages)) {         // see if current cell is a hostage
+                    // set as a tree if hostage
+                    forestFireCells[xCount, yCount].SetTree();
+                    forestFireCells[xCount, yCount].cellFuel = UnityEngine.Random.Range(15, 25);
+
+                    // instantiate a hostage
+                    Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform, true);
+                    forestFireCells[xCount, yCount].containsHostage = true;
+                    continue;
+                }
+
                 xC = UnityEngine.Random.Range(0, 100); // generate a random number between 0 and 100
 
                 if (xC < rockChance) // if the random value is less than rock chance, assign cell as rock
@@ -325,6 +344,7 @@ public class ForestFire3D : MonoBehaviour
                 else if (forestFireCells[xCount, yCount].cellState != ForestFireCell.State.Rock && forestFireCells[xCount, yCount].cellFuel <= 0)// it's not a rock but it's fuel is zero, therefore it must be burnt out grass or tree
                 {
                     forestFireCells[xCount, yCount].SetBurnt();
+                    //Debug.Log("I burnt " + xCount + " " + yCount);
                 }
                 else if (forestFireCells[xCount, yCount].cellState == ForestFireCell.State.Grass)
                 {

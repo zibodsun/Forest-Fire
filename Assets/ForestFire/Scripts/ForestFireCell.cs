@@ -18,7 +18,7 @@ public class ForestFireCell : MonoBehaviour
         Rock,
         Burnt,
     }
-
+    public bool containsHostage = false;
     public int cellFuel; // integer to store the amount of fuel in the cell
 
     // references to materials used for visual appearance
@@ -47,7 +47,7 @@ public class ForestFireCell : MonoBehaviour
         groundMeshRenderer = GetComponent<MeshRenderer>(); // get reference to this cell's mesh renderer
     }
 
-    // reset anything that was turned on by a different cell 
+    // reset anything that was turned on by a different cell
     private void ResetCell()
     {
         // turn off the tree and rock objects

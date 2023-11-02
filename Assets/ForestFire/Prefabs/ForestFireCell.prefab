@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfAliveNeighbours: 0
   cellState: 0
+  containsHostage: 0
   cellFuel: 0
   groundMaterialBurnt: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
   groundMaterialGrass: {fileID: 2100000, guid: 9dccf2dcc78efe741b7931e3bb85beaf, type: 2}
