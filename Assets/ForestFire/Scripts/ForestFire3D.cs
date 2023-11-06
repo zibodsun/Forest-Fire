@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 // class that controls the forest fire cellular automaton
 public class ForestFire3D : MonoBehaviour
 {
-    public HostageManager hostageManager;
+    public HostageManager hostageManager;   // reference to an object containing the hostage manager script
 
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
@@ -110,16 +110,15 @@ public class ForestFire3D : MonoBehaviour
 
     private void RandomiseGrid()
     {
-        nlight = 2; // how many trees to set on fire
-                      // iterate through every cell in the cell in the grid and set its state to dead, decide what type of object is present and if flammable assign an amount of fuel
+        // iterate through every cell in the cell in the grid and set its state to dead, decide what type of object is present and if flammable assign an amount of fuel
 
         for (int xCount = 0; xCount < gridSizeX; xCount++)
         {
             for (int yCount = 0; yCount < gridSizeY; yCount++)
             {
-                
-                if (hostageManager.ContainsHostage(xCount, yCount, hostages)) {         // see if current cell is a hostage
-                    // set as a tree if hostage
+                // check if this cell holds a hostage   
+                if (hostageManager.ContainsHostage(xCount, yCount, hostages)) { 
+                    // set as a tree
                     forestFireCells[xCount, yCount].SetTree();
                     forestFireCells[xCount, yCount].cellFuel = UnityEngine.Random.Range(15, 25);
 

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ignite
+  - ScoreBoard
   layers:
   - Default
   - TransparentFX

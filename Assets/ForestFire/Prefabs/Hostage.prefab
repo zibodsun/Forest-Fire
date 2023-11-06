@@ -235,3 +235,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73cd7a67b643c94dac851047f1c17e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}
+  hostageManager: {fileID: 0}

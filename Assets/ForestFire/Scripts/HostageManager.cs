@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
+/*
+ * The three levels of difficulty that the game can be played in
+ */
 public enum Difficulty 
 { 
     Easy,
@@ -13,24 +16,28 @@ public enum Difficulty
 public class HostageManager : MonoBehaviour
 {
     public Difficulty difficulty;
-    public ForestFire3D forestFire;
+    public ForestFire3D forestFire;     // reference to the ForestFire3D script
     public GameObject hostagePrefab;
     
-    private int numberOfHostages;
+    public int numberOfHostages;        // determined at Start by the difficulty picked
+    private int currentHostages;        // hostages that have been rescued
 
     private void Awake()
     {
-        // assign variables associated with difficulty
+        // difficulty affects the number of hostages to rescue and the spread of the fire
         switch (difficulty)
         {
             case Difficulty.Easy:
                 numberOfHostages = 3;
+                forestFire.nlight = 2;
                 break;
             case Difficulty.Medium:
                 numberOfHostages = 6;
+                forestFire.nlight = 4;
                 break;
             case Difficulty.Hard:
                 numberOfHostages = 9;
+                forestFire.nlight = 6;
                 break;
         }
     }
@@ -38,9 +45,10 @@ public class HostageManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("Start HostageManager");
+        currentHostages = 0;           // initialise the hostage count
     }
 
-    /**
+    /*
      *  This method returns a Dictionary mapping the coordinates of all hostages. It can be called my other classes to 
      *  generate the hostages within the grid of the ForestFire3D object.
      */
@@ -58,6 +66,9 @@ public class HostageManager : MonoBehaviour
         return hostageLocations;
     }
 
+    /*
+     * Returns true if the dictionary hostageList contains the cell coordinates provided in the parameters
+     */
     public bool ContainsHostage(int xCount, int yCount, int[,] hostageList) {
         for (int i = 0; i < hostageList.GetLength(0); i++) {
             if (hostageList[i,0] == xCount && hostageList[i,1] == yCount) {
@@ -67,9 +78,24 @@ public class HostageManager : MonoBehaviour
         return false;
     }
 
+    // Prints all the generated hostages. Only for debugging
     public void PrintHostageList(int[,] hostageList) {
         for (int i = 0; i < hostageList.GetLength(0); i++) { 
             Debug.Log(hostageList[i,0] + " " + hostageList[i,1]);
         }
+    }
+
+    /*
+     * Returns the number of active hostages
+     */
+    public int getCurrHostages() {
+        return currentHostages;
+    }
+
+    /*
+     * Call this function when a hostage is rescued to increase the score
+     */
+    public void hostageRescued() {
+        currentHostages++;
     }
 }

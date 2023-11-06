@@ -57,7 +57,7 @@ public class MiniMap : MonoBehaviour
             {
                 // check if the cell contains a hostage
                 if (forestFire3D.forestFireCells[xCount, yCount].containsHostage) {
-                    cellSpriteRenderers[xCount, yCount].color = Color.cyan;
+                    cellSpriteRenderers[xCount, yCount].color = Color.cyan;     // cells containing hostages are set to this colour
                     continue;
                 }
 
