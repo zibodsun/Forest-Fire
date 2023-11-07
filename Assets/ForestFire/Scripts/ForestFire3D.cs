@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 // class that controls the forest fire cellular automaton
 public class ForestFire3D : MonoBehaviour
 {
     public HostageManager hostageManager;   // reference to an object containing the hostage manager script
+    public TMP_Text scoreText;
 
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
@@ -46,7 +48,8 @@ public class ForestFire3D : MonoBehaviour
     {
         hostages = hostageManager.GenerateHostages();
         hostageManager.PrintHostageList(hostages);
-        
+        scoreText = GameObject.FindGameObjectWithTag("ScoreBoard").GetComponent<TMP_Text>();
+
         CreateGrid(gridSizeX, gridSizeY);
         RandomiseGrid();
         PauseGame(true);
@@ -106,6 +109,15 @@ public class ForestFire3D : MonoBehaviour
             UpdateCells();
             _gameTimer = 0f;
         }
+
+        scoreText.text = "SCORE: " + hostageManager.getCurrHostages() + "/" + hostageManager.numberOfHostages;
+
+        // check if the game has been completed
+        if (hostageManager.getCurrHostages() >= hostageManager.numberOfHostages) {
+            Debug.Log("Ending...");
+            EndGame();
+            gameRunning = false;
+        }
     }
 
     private void RandomiseGrid()
@@ -123,7 +135,7 @@ public class ForestFire3D : MonoBehaviour
                     forestFireCells[xCount, yCount].cellFuel = UnityEngine.Random.Range(15, 25);
 
                     // instantiate a hostage
-                    Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform, true);
+                    Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position, forestFireCells[xCount, yCount].transform.rotation);
                     forestFireCells[xCount, yCount].containsHostage = true;
                     continue;
                 }
@@ -355,5 +367,9 @@ public class ForestFire3D : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void EndGame() {
+        Debug.Log("Congratulations");
     }
 }
