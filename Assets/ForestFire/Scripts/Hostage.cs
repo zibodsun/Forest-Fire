@@ -6,8 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Hostage : MonoBehaviour
 {
-    
     public HostageManager hostageManager;
+    public float currHealth;
+    public float maxHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,7 @@ public class Hostage : MonoBehaviour
         XRSimpleInteractable interactable = GetComponent<XRSimpleInteractable>();
         
         hostageManager = GameObject.FindObjectOfType<HostageManager>();
+
         //interactable.activated.AddListener(Rescue);
         //interactable.hoverEntered.AddListener(Rescue);
     }

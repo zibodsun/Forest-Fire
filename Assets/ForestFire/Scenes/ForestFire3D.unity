@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hostageManager: {fileID: 219239746}
+  scoreText: {fileID: 0}
   gridSizeX: 40
   gridSizeY: 40
   nlight: 5
@@ -295,9 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89867d219c535b44a858abc11a6f9672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
+  difficulty: 2
   forestFire: {fileID: 219239745}
-  hostagePrefab: {fileID: 5650273086507325155, guid: be872c2d21a87aa46a79a78371011f9c,
+  hostagePrefab: {fileID: 8339621753098973347, guid: ec1e8e744d8c29640bcdcca1f27e9d86,
     type: 3}
   numberOfHostages: 0
 --- !u!1 &677648907 stripped

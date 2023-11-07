@@ -128,14 +128,19 @@ public class ForestFire3D : MonoBehaviour
         {
             for (int yCount = 0; yCount < gridSizeY; yCount++)
             {
-                // check if this cell holds a hostage   
+                // check if this cell holds a hostage
                 if (hostageManager.ContainsHostage(xCount, yCount, hostages)) { 
                     // set as a tree
                     forestFireCells[xCount, yCount].SetTree();
-                    forestFireCells[xCount, yCount].cellFuel = UnityEngine.Random.Range(15, 25);
+                    int fuel = UnityEngine.Random.Range(15, 25);
+                    forestFireCells[xCount, yCount].cellFuel = fuel;
+
 
                     // instantiate a hostage
-                    Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position, forestFireCells[xCount, yCount].transform.rotation);
+                    GameObject h = Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position, forestFireCells[xCount, yCount].transform.rotation);
+                    Slider slider = h.transform.Find("Canvas").Find("HealthBar").GetComponent<Slider>();
+                    slider.maxValue = fuel;
+
                     forestFireCells[xCount, yCount].containsHostage = true;
                     continue;
                 }
@@ -191,7 +196,7 @@ public class ForestFire3D : MonoBehaviour
                 if (forestFireCells[xCount, yCount].cellState == ForestFireCell.State.Alight) // if the cell is currently alight let it burn but reduce it's fuel and see if it goes out
                 {
                      forestFireCells[xCount, yCount].cellFuel--; // reduce fuel by 1 (-- operator reduces an integer by 1)
-
+                     
 
                     if (forestFireCells[xCount, yCount].cellFuel <= 0) // has it burned all its fuel?
                     {
