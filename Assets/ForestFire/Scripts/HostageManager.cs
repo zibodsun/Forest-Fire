@@ -18,25 +18,29 @@ public class HostageManager : MonoBehaviour
     public Difficulty difficulty;
     public ForestFire3D forestFire;     // reference to the ForestFire3D script
     public GameObject hostagePrefab;
-    
+    public GameObject deathImage;
+
     public int numberOfHostages;        // determined at Start by the difficulty picked
     private int currentHostages;        // hostages that have been rescued
 
+
     private void Awake()
     {
-        // difficulty affects the number of hostages to rescue and the spread of the fire
+        difficulty = DifficultySetting.staticDifficulty;
+
+        // difficulty affects the number of hostages to rescue and the starting number of lit trees
         switch (difficulty)
         {
             case Difficulty.Easy:
-                numberOfHostages = 3;
+                numberOfHostages = 2;
                 forestFire.nlight = 2;
                 break;
             case Difficulty.Medium:
-                numberOfHostages = 6;
+                numberOfHostages = 4;
                 forestFire.nlight = 4;
                 break;
             case Difficulty.Hard:
-                numberOfHostages = 9;
+                numberOfHostages = 7;
                 forestFire.nlight = 6;
                 break;
         }
@@ -78,7 +82,9 @@ public class HostageManager : MonoBehaviour
         return false;
     }
 
-    // Prints all the generated hostages. Only for debugging
+    /*
+     * Prints all the generated hostages. Only for debugging
+     */
     public void PrintHostageList(int[,] hostageList) {
         for (int i = 0; i < hostageList.GetLength(0); i++) { 
             Debug.Log(hostageList[i,0] + " " + hostageList[i,1]);

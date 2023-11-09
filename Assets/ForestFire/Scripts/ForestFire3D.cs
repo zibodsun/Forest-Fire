@@ -6,18 +6,23 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 using Unity.XR.CoreUtils;
+using UnityEngine.SceneManagement;
+
 
 // class that controls the forest fire cellular automaton
 public class ForestFire3D : MonoBehaviour
 {
     public HostageManager hostageManager;   // reference to an object containing the hostage manager script
     public TMP_Text scoreText;
+    public Canvas menu;
+    private TMP_Text title;
+    private TMP_Text description;
 
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
     public int nlight; // the number of trees to set alight at the start of the game
     public int xC, yC; // used for picking random x, y points
-
+    
     public int rockChance; // the percentage chance a cell is assigned as rock
     public int grassChance; // the percentage chance a cell is assigned as grass
 
@@ -49,7 +54,18 @@ public class ForestFire3D : MonoBehaviour
     {
         hostages = hostageManager.GenerateHostages();
         hostageManager.PrintHostageList(hostages);
-        scoreText = GameObject.FindGameObjectWithTag("ScoreBoard").GetComponent<TMP_Text>();
+
+        title = menu.transform.Find("Title").GetComponent<TMP_Text>();
+        description = menu.transform.Find("Description").GetComponent<TMP_Text>();
+
+        // when left controller is not tracked the object is disabled, causing an error which stops the cells from loading.
+        try
+        {
+            scoreText = GameObject.FindGameObjectWithTag("ScoreBoard").GetComponent<TMP_Text>();
+        }
+        catch( NullReferenceException e ) { 
+            Debug.Log("Left controller not found");     // catch the error so that the code does not stop running
+        }   
 
         CreateGrid(gridSizeX, gridSizeY);
         RandomiseGrid();
@@ -110,8 +126,10 @@ public class ForestFire3D : MonoBehaviour
             UpdateCells();
             _gameTimer = 0f;
         }
-
-        scoreText.text = "SCORE: " + hostageManager.getCurrHostages() + "/" + hostageManager.numberOfHostages;
+        // update score text on the player's hand
+        if (scoreText != null) {
+            scoreText.text = "SCORE: " + hostageManager.getCurrHostages() + "/" + hostageManager.numberOfHostages;
+        }
 
         // check if the game has been completed
         if (hostageManager.getCurrHostages() >= hostageManager.numberOfHostages) {
@@ -133,19 +151,19 @@ public class ForestFire3D : MonoBehaviour
                 if (hostageManager.ContainsHostage(xCount, yCount, hostages)) { 
                     // set as a tree
                     forestFireCells[xCount, yCount].SetTree();
-                    int fuel = UnityEngine.Random.Range(15, 25);
+                    int fuel = 25;  // trees with hostages all have the same fuel
                     forestFireCells[xCount, yCount].cellFuel = fuel;
 
 
                     // instantiate a hostage
-                    Vector3 offset = new Vector3(-1,0,0); // hostages spawn in front of trees
+                    Vector3 offset = new Vector3(-1,0,0); // hostages spawn next to trees
                     GameObject h = Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position + offset, forestFireCells[xCount, yCount].transform.rotation);
+                    h.GetComponent<Hostage>().cell = forestFireCells[xCount, yCount];
 
                     forestFireCells[xCount, yCount].containsHostage = true;
-                    // set the max health of the hostage to the fuel. once the fuel reaches zero, the hostage is destroyed
-                    forestFireCells[xCount, yCount].transform.Find("Canvas").gameObject.SetActive(true); // if the cell contains a hostage, enable the health bar
-
-                    forestFireCells[xCount, yCount].transform.Find("Canvas").Find("HealthBar").gameObject.GetComponent<Slider>().maxValue = fuel;
+                    // set the max health of the hostage to the fuel
+                    // forestFireCells[xCount, yCount].transform.Find("Canvas").gameObject.SetActive(true); // if the cell contains a hostage, enable the health bar
+                    // h.transform.Find("Canvas").Find("HealthBar").gameObject.GetComponent<Slider>().maxValue = fuel;
                     continue;
                 }
 
@@ -201,7 +219,6 @@ public class ForestFire3D : MonoBehaviour
                 {
                      forestFireCells[xCount, yCount].cellFuel--; // reduce fuel by 1 (-- operator reduces an integer by 1)
                      
-
                     if (forestFireCells[xCount, yCount].cellFuel <= 0) // has it burned all its fuel?
                     {
                         // cell has no fuel so is burned out 
@@ -220,7 +237,7 @@ public class ForestFire3D : MonoBehaviour
                         xC = UnityEngine.Random.Range(0, 100); // generate a random number between 0 and 100
 
                         if (xC < 10 * alightNeighbourCells) // the more alight neighbours the greater the probability of catching light
-                                                                      // e.g. 1 alight neighbour = 10 * 1 = 10% chance of catching fire, 2 alight neighbours = 10 * 2 = 20% chance of catching fire, etc.
+                                                            // e.g. 1 alight neighbour = 10 * 1 = 10% chance of catching fire, 2 alight neighbours = 10 * 2 = 20% chance of catching fire, etc.
                         {
                             forestFireCellsNextGenStates[xCount, yCount] = ForestFireCell.State.Alight;  // a 10% chance of catching fire
                         }
@@ -379,5 +396,13 @@ public class ForestFire3D : MonoBehaviour
 
     private void EndGame() {
         Debug.Log("Congratulations");
+
+        // reload scene and take user back to centre
+        Scene scene = SceneManager.GetActiveScene(); 
+        SceneManager.LoadScene(scene.name);
+
+        // ending screen
+        title.text = "Congratulations, you have rescued all the hostages!";
+        description.gameObject.SetActive(false);
     }
 }
