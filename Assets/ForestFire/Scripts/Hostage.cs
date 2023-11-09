@@ -7,8 +7,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Hostage : MonoBehaviour
 {
     public HostageManager hostageManager;
-    public float currHealth;
-    public float maxHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +22,7 @@ public class Hostage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // rescue all hostages (For Debugging Only)
         if (Keyboard.current.kKey.wasPressedThisFrame) {
             Rescue();
         }

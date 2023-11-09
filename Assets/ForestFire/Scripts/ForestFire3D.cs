@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using Unity.XR.CoreUtils;
 
 // class that controls the forest fire cellular automaton
 public class ForestFire3D : MonoBehaviour
@@ -137,11 +138,14 @@ public class ForestFire3D : MonoBehaviour
 
 
                     // instantiate a hostage
-                    GameObject h = Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position, forestFireCells[xCount, yCount].transform.rotation);
-                    Slider slider = h.transform.Find("Canvas").Find("HealthBar").GetComponent<Slider>();
-                    slider.maxValue = fuel;
+                    Vector3 offset = new Vector3(-1,0,0); // hostages spawn in front of trees
+                    GameObject h = Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position + offset, forestFireCells[xCount, yCount].transform.rotation);
 
                     forestFireCells[xCount, yCount].containsHostage = true;
+                    // set the max health of the hostage to the fuel. once the fuel reaches zero, the hostage is destroyed
+                    forestFireCells[xCount, yCount].transform.Find("Canvas").gameObject.SetActive(true); // if the cell contains a hostage, enable the health bar
+
+                    forestFireCells[xCount, yCount].transform.Find("Canvas").Find("HealthBar").gameObject.GetComponent<Slider>().maxValue = fuel;
                     continue;
                 }
 
@@ -360,7 +364,6 @@ public class ForestFire3D : MonoBehaviour
                 else if (forestFireCells[xCount, yCount].cellState != ForestFireCell.State.Rock && forestFireCells[xCount, yCount].cellFuel <= 0)// it's not a rock but it's fuel is zero, therefore it must be burnt out grass or tree
                 {
                     forestFireCells[xCount, yCount].SetBurnt();
-                    //Debug.Log("I burnt " + xCount + " " + yCount);
                 }
                 else if (forestFireCells[xCount, yCount].cellState == ForestFireCell.State.Grass)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.UI;
 
 // class that represents a single cell in the cellular automaton
 // contains data about the cell and methods to change its visual appearance
@@ -9,6 +10,7 @@ public class ForestFireCell : MonoBehaviour
 {
     public int numberOfAliveNeighbours; // integer to store the number of alive neighbour cells
     public State cellState; // this variable stores the state of the cell as an enum defined below 
+    public Slider healthSlider;
     public enum State
     {
         None,
@@ -45,6 +47,7 @@ public class ForestFireCell : MonoBehaviour
     private void Awake()
     {
         groundMeshRenderer = GetComponent<MeshRenderer>(); // get reference to this cell's mesh renderer
+        healthSlider = transform.Find("Canvas").Find("HealthBar").gameObject.GetComponent<Slider>(); // get reference to this cell's health bar
     }
 
     // reset anything that was turned on by a different cell
@@ -64,7 +67,12 @@ public class ForestFireCell : MonoBehaviour
 
     // Update is a built-in Unity function that is called once per frame 
     private void Update()
-    {
+    {   
+        // update the health slider when it is a hostage cell
+        if (containsHostage) {
+
+            healthSlider.value = cellFuel;  // the health of the hostage is the same as the level of fuel of the cell
+        }
         // check whether current fire variable has been assigned 
         if (currentFire != null)
         {
@@ -162,6 +170,9 @@ public class ForestFireCell : MonoBehaviour
         {
             Destroy(currentFire);
         }
+
+        // if the cell has a hostage, destroy it
+        
 
         // if there are leaves active in the hierarchy of this cell, disable them as if they have been burnt 
         if (treeObject.activeInHierarchy)

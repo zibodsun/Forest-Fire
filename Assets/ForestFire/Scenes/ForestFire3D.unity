@@ -280,7 +280,7 @@ MonoBehaviour:
   yC: 0
   rockChance: 10
   grassChance: 40
-  cellPrefab: {fileID: 8517016399536926406, guid: bd5b6afb2ea580946a81c949556e036e,
+  cellPrefab: {fileID: 1551456448969004744, guid: 6a68aa370d44b0c459408154e13a3f4d,
     type: 3}
   gameRunning: 0
   updateRate: 1
@@ -296,9 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89867d219c535b44a858abc11a6f9672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 2
+  difficulty: 0
   forestFire: {fileID: 219239745}
-  hostagePrefab: {fileID: 8339621753098973347, guid: ec1e8e744d8c29640bcdcca1f27e9d86,
+  hostagePrefab: {fileID: 3192482817573099175, guid: e775602ecb6ef9c4b96fb33a4ffdeca2,
     type: 3}
   numberOfHostages: 0
 --- !u!1 &677648907 stripped
