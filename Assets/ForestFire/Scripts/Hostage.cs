@@ -33,7 +33,7 @@ public class Hostage : MonoBehaviour
 
         if (cell.cellFuel <= 0)
         {
-            cell.SetBurnt();
+            cell.containsHostage = false;
             this.gameObject.SetActive(false);
         }else {
             healthSlider.value = cell.cellFuel;  // the health of the hostage is the same as the level of fuel of the cell
@@ -43,6 +43,7 @@ public class Hostage : MonoBehaviour
 
     public void Rescue() {
         hostageManager.hostageRescued();
+        cell.containsHostage = false;
         Debug.Log(hostageManager.getCurrHostages() + " " + hostageManager.numberOfHostages + "==========");
         Destroy(this.gameObject);
     }

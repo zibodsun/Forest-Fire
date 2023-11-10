@@ -17,6 +17,10 @@ public class ForestFire3D : MonoBehaviour
     public Canvas menu;
     private TMP_Text title;
     private TMP_Text description;
+    private Button restartButton;
+
+    public XROrigin playerOrigin;
+    public Transform spawnOrigin;
 
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
@@ -57,6 +61,7 @@ public class ForestFire3D : MonoBehaviour
 
         title = menu.transform.Find("Title").GetComponent<TMP_Text>();
         description = menu.transform.Find("Description").GetComponent<TMP_Text>();
+        restartButton = menu.transform.Find("RestartGame").GetComponent<Button>();
 
         // when left controller is not tracked the object is disabled, causing an error which stops the cells from loading.
         try
@@ -397,12 +402,15 @@ public class ForestFire3D : MonoBehaviour
     private void EndGame() {
         Debug.Log("Congratulations");
 
-        // reload scene and take user back to centre
-        Scene scene = SceneManager.GetActiveScene(); 
-        SceneManager.LoadScene(scene.name);
-
         // ending screen
+        playerOrigin.transform.position = spawnOrigin.position;
+        title.fontSize = 30;
         title.text = "Congratulations, you have rescued all the hostages!";
         description.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(true);
+    }
+
+    public void Restart() {
+        SceneManager.LoadScene(0);
     }
 }
