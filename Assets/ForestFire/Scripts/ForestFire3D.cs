@@ -13,14 +13,14 @@ using UnityEngine.SceneManagement;
 public class ForestFire3D : MonoBehaviour
 {
     public HostageManager hostageManager;   // reference to an object containing the hostage manager script
-    public TMP_Text scoreText;
-    public Canvas menu;
-    private TMP_Text title;
+    public TMP_Text scoreText;              // score board
+    public Canvas menu;                     // the text at the spawn position
+    private TMP_Text title;                 
     private TMP_Text description;
-    private Button restartButton;
+    private Button restartButton;           // used to load the difficulty menu scene
 
-    public XROrigin playerOrigin;
-    public Transform spawnOrigin;
+    public XROrigin playerOrigin;           // the XROrigin of the player
+    public Transform spawnOrigin;           // the spawn position
 
     public int gridSizeX; // x size of the grid
     public int gridSizeY; // y size of the grid
@@ -43,7 +43,7 @@ public class ForestFire3D : MonoBehaviour
     private float _gameTimer; // a variable that will be used detect when the game should update 
 
     private Camera gameCamera; // the camera that is players viewport
-    private int[,] hostages;
+    private int[,] hostages;    // a 2D array storing the hostage coordinates
 
     // Awake is a built-in Unity function that is only called once, before the Start function
     private void Awake()
@@ -56,9 +56,10 @@ public class ForestFire3D : MonoBehaviour
     // Start is a built-in Unity function that is called before the first frame update
     private void Start()
     {
-        hostages = hostageManager.GenerateHostages();
-        hostageManager.PrintHostageList(hostages);
+        hostages = hostageManager.GenerateHostages();   // returns random positions for the hostages
+        hostageManager.PrintHostageList(hostages);      // prints hostages on the console
 
+        // assign the objects of the text in the middle of the grid
         title = menu.transform.Find("Title").GetComponent<TMP_Text>();
         description = menu.transform.Find("Description").GetComponent<TMP_Text>();
         restartButton = menu.transform.Find("RestartGame").GetComponent<Button>();
@@ -140,7 +141,7 @@ public class ForestFire3D : MonoBehaviour
         if (hostageManager.getCurrHostages() >= hostageManager.numberOfHostages) {
             Debug.Log("Ending...");
             EndGame();
-            gameRunning = false;
+            gameRunning = false;    // stops the game
         }
     }
 
@@ -163,12 +164,10 @@ public class ForestFire3D : MonoBehaviour
                     // instantiate a hostage
                     Vector3 offset = new Vector3(-1,0,0); // hostages spawn next to trees
                     GameObject h = Instantiate(hostageManager.hostagePrefab, forestFireCells[xCount, yCount].transform.position + offset, forestFireCells[xCount, yCount].transform.rotation);
-                    h.GetComponent<Hostage>().cell = forestFireCells[xCount, yCount];
+                    h.GetComponent<Hostage>().cell = forestFireCells[xCount, yCount];   // assign the hostage to its corresponding cell
 
                     forestFireCells[xCount, yCount].containsHostage = true;
-                    // set the max health of the hostage to the fuel
-                    // forestFireCells[xCount, yCount].transform.Find("Canvas").gameObject.SetActive(true); // if the cell contains a hostage, enable the health bar
-                    // h.transform.Find("Canvas").Find("HealthBar").gameObject.GetComponent<Slider>().maxValue = fuel;
+                    
                     continue;
                 }
 

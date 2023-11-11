@@ -68,12 +68,6 @@ public class ForestFireCell : MonoBehaviour
     // Update is a built-in Unity function that is called once per frame 
     private void Update()
     {   
-        /*
-        // update the health slider when it is a hostage cell
-        if (containsHostage) {
-
-            healthSlider.value = cellFuel;  // the health of the hostage is the same as the level of fuel of the cell
-        } */
 
         // check whether current fire variable has been assigned 
         if (currentFire != null)

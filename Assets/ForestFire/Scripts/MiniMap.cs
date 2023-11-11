@@ -83,7 +83,6 @@ public class MiniMap : MonoBehaviour
                 }
                 else // something has gone wrong, display an error message
                 {
-                    //Debug.Log(forestFire3D.forestFireCells[xCount, yCount].name + " " + forestFire3D.forestFireCells[xCount, yCount].cellState);
                     Debug.LogError("objectArray is not 0, 1 or 2, check code for errors");  
                 }
             }

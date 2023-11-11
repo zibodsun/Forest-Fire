@@ -18,8 +18,7 @@ public class HostageManager : MonoBehaviour
 {
     public Difficulty difficulty;
     public ForestFire3D forestFire;     // reference to the ForestFire3D script
-    public GameObject hostagePrefab;
-    public GameObject deathImage;
+    public GameObject hostagePrefab;    // prefab for the hostage
 
     public int numberOfHostages;        // determined at Start by the difficulty picked
     private int currentHostages;        // hostages that have been rescued
@@ -27,22 +26,22 @@ public class HostageManager : MonoBehaviour
 
     private void Awake()
     {
-        difficulty = DifficultySetting.staticDifficulty;
+        difficulty = DifficultySetting.staticDifficulty;    // staticDifficulty maintains its value across the project
 
         // difficulty affects the number of hostages to rescue and the starting number of lit trees
         switch (difficulty)
         {
             case Difficulty.Easy:
-                numberOfHostages = 2;
-                forestFire.nlight = 2;
+                numberOfHostages = 1;
+                forestFire.nlight = 1;
                 break;
             case Difficulty.Medium:
-                numberOfHostages = 4;
-                forestFire.nlight = 4;
+                numberOfHostages = 3;
+                forestFire.nlight = 2;
                 break;
             case Difficulty.Hard:
-                numberOfHostages = 4;
-                forestFire.nlight = 6;
+                numberOfHostages = 5;
+                forestFire.nlight = 3;
                 break;
         }
     }
@@ -54,7 +53,7 @@ public class HostageManager : MonoBehaviour
     }
 
     /*
-     *  This method returns a Dictionary mapping the coordinates of all hostages. It can be called my other classes to 
+     *  This function returns a Dictionary mapping the coordinates of all hostages. It can be called by other classes to 
      *  generate the hostages within the grid of the ForestFire3D object.
      */
     public int[,] GenerateHostages() {
@@ -84,6 +83,8 @@ public class HostageManager : MonoBehaviour
      * Returns true if the dictionary hostageList contains the cell coordinates provided in the parameters
      */
     public bool ContainsHostage(int xCount, int yCount, int[,] hostageList) {
+
+        // iterate through hostageList
         for (int i = 0; i < hostageList.GetLength(0); i++) {
             if (hostageList[i,0] == xCount && hostageList[i,1] == yCount) {
                 return true;
