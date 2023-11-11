@@ -4,7 +4,7 @@
 
 Forest Fire is a virtual reality (VR) game developed for a university assignment. Immerse yourself in the challenging world as you navigate through a virtual forest environment to save hostages.
 
-[Trailer](https://youtu.be/L7URs4q119A)
+[![Trailer](https://img.youtube.com/vi/L7URs4q119A/hqdefault.jpg)](https://youtu.be/L7URs4q119A)
 
 ## Prerequisites
 
